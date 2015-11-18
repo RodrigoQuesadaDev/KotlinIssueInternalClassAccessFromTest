@@ -1,6 +1,6 @@
 buildscript {
     //ext.kotlin_version = '0.1-SNAPSHOT'
-    ext.kotlin_version = '0.14.449'
+    ext.kotlin_version = '1.0.0-beta-2423'
     repositories {
         mavenCentral()
         maven {
@@ -8,6 +8,7 @@ buildscript {
         }
     }
     dependencies {
+        classpath 'com.android.tools.build:gradle:1.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -19,8 +20,40 @@ repositories {
     }
 }
 
-apply plugin: 'application'
-apply plugin: 'kotlin'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.example"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets.main.java.srcDirs += ['src/stuff/java']
+    sourceSets.test.java.srcDirs = ['src/stuffTest/java']
+}
+
+kapt {
+    generateStubs = true
+}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
